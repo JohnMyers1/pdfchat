@@ -12,6 +12,16 @@ import streamlit as st
 import os
 import time
 
+# Remember to run this "pip install pysqlite3-binary"
+
+# Override sqlite 
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+import chromadb
+import pypdf
+
 if not os.path.exists('files'):
     os.mkdir('files')
 
@@ -39,11 +49,11 @@ if 'memory' not in st.session_state:
 if 'vectorstore' not in st.session_state:
     st.session_state.vectorstore = Chroma(persist_directory='jj',
                         embedding_function=OllamaEmbeddings(
-                            model="mistral:instruct")
+                            model="mistral")
                         )
 if 'llm' not in st.session_state:
     st.session_state.llm = Ollama(base_url="http://localhost:11434",
-                model="mistral:instruct",
+                model="mistral",
                 verbose=True,
                 callback_manager=CallbackManager(
                     [StreamingStdOutCallbackHandler()]),
@@ -57,6 +67,7 @@ st.title("PDF Chatbot")
 
 # Upload a PDF file
 uploaded_file = st.file_uploader("Upload your PDF", type='pdf')
+print(uploaded_file)
 
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"]):

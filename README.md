@@ -42,3 +42,19 @@ streamlit run app.py
 ```
 ## Application Preview :
 ![image](https://github.com/SonicWarrior1/pdfchat/assets/73881129/32f9685b-f70e-48da-8e6f-9fdce1fdd0cc)
+
+
+## My notes
+
+```
+docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+docker exec -it ollama ollama run mistral
+```
+
+
+Fix sqlite issue by 
+
+```
+pip install pysqlite3-binary
+```
+Update app.py to redirect to sqlite
